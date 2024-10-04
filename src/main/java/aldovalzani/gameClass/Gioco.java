@@ -10,7 +10,7 @@ public abstract class Gioco {
     public Gioco(String titolo, int annoDiPubblicazione, double prezzo) {
         this.idGioco = contatoreId++;
         this.titolo = titolo;
-        this.annoDiPubblicazione = annoDiPubblicazione;
+        setAnnoDiPubblicazione(annoDiPubblicazione);
         setPrezzo(prezzo);
     }
 
@@ -19,12 +19,12 @@ public abstract class Gioco {
         return annoDiPubblicazione;
     }
 
-    public void setAnnoDiPubblicazione(int annoDiPubblicazione) throws IllegalArgumentException {
 
-        if (annoDiPubblicazione > 0) {
+    public void setAnnoDiPubblicazione(int annoDiPubblicazione) throws IllegalArgumentException {
+        if (annoDiPubblicazione >= 1900 && annoDiPubblicazione <= 2024) {
             this.annoDiPubblicazione = annoDiPubblicazione;
         } else {
-            throw new IllegalArgumentException("l'anno deve essere positivo");
+            throw new IllegalArgumentException("L'anno di pubblicazione deve essere compreso tra il 1900 e il 2024.");
         }
     }
 

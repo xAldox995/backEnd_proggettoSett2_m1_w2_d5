@@ -15,25 +15,21 @@ public class Application {
 
     public static void main(String[] args) {
         Faker faker = new Faker();
-        VideoGame vg1 = new VideoGame(faker.book().title(),
-                2021, 57.99,
-                30, GenereGioco.FANTASY, "PS5");
-
-        VideoGame vg2 = new VideoGame(faker.book().title(),
-                2022, 69.99,
-                40, GenereGioco.AZIONE, "PC");
-
-        GiocoDaTavolo tg1 = new GiocoDaTavolo(faker.book().title(),
-                1995, 20.00, 120, 4);
-
-        GiocoDaTavolo tg2 = new GiocoDaTavolo(faker.book().title(),
-                2010, 35.50, 90, 6);
-
         Collezione collezione = new Collezione();
-        collezione.addGioco(vg1);
-        collezione.addGioco(vg2);
-        collezione.addGioco(tg1);
-        collezione.addGioco(tg2);
+
+        try {
+            VideoGame vg1 = new VideoGame(faker.book().title(), 2021, 57.99, 30, GenereGioco.FANTASY, "PS5");
+            VideoGame vg2 = new VideoGame(faker.book().title(), 2022, 69.99, 40, GenereGioco.AZIONE, "PC");
+            GiocoDaTavolo tg1 = new GiocoDaTavolo(faker.book().title(), 1995, 20.00, 120, 4);
+            GiocoDaTavolo tg2 = new GiocoDaTavolo(faker.book().title(), 2010, 35.50, 90, 6);
+
+            collezione.addGioco(vg1);
+            collezione.addGioco(vg2);
+            collezione.addGioco(tg1);
+            collezione.addGioco(tg2);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Errore durante l'inizializzazione della collezione: " + e.getMessage());
+        }
 
         Scanner in = new Scanner(System.in);
         boolean flag = true;
@@ -58,39 +54,114 @@ public class Application {
                     case 1:
                         System.out.print("Vuoi aggiungere un Videogioco (1) o un Gioco da Tavolo (2)? ");
                         int tipoGioco = Integer.parseInt(in.nextLine());
+
                         System.out.print("Inserisci il titolo del gioco: ");
                         String titoloGioco = in.nextLine();
-                        System.out.print("Inserisci l'anno di pubblicazione: ");
-                        int annoGioco = Integer.parseInt(in.nextLine());
-                        System.out.print("Inserisci il prezzo del gioco: ");
-                        double prezzoGioco = Double.parseDouble(in.nextLine());
+
+                        int annoGioco;
+                        while (true) {
+                            System.out.print("Inserisci l'anno di pubblicazione (dal 1900 ad oggi): ");
+                            try {
+                                annoGioco = Integer.parseInt(in.nextLine());
+                                if (annoGioco >= 1900 && annoGioco <= 2024) {
+                                    break;  // L'anno è valido, esci dal ciclo
+                                } else {
+                                    System.out.println("Errore: L'anno di pubblicazione deve essere compreso tra 1900 e 2024.");
+                                }
+                            } catch (NumberFormatException ex) {
+                                System.out.println("Errore: L'anno deve essere un numero valido. Riprova con un valore valido.");
+                            }
+                        }
+
+                        double prezzoGioco;
+                        while (true) {
+                            System.out.print("Inserisci il prezzo del gioco (maggiore di 0): ");
+                            try {
+                                prezzoGioco = Double.parseDouble(in.nextLine());
+                                if (prezzoGioco > 0) {
+                                    break;  // Il prezzo è valido, esci dal ciclo
+                                } else {
+                                    System.out.println("Errore: Il prezzo deve essere maggiore di zero.");
+                                }
+                            } catch (NumberFormatException ex) {
+                                System.out.println("Errore: Il prezzo deve essere un numero valido. Riprova con un valore valido.");
+                            }
+                        }
 
                         if (tipoGioco == 1) {
                             System.out.print("Inserisci la piattaforma del videogioco: ");
                             String piattaforma = in.nextLine();
 
-                            System.out.print("Inserisci la durata di gioco (in ore): ");
-                            int durata = Integer.parseInt(in.nextLine());
+                            int durata;
+                            while (true) {
+                                System.out.print("Inserisci la durata di gioco (in ore, maggiore di 0): ");
+                                try {
+                                    durata = Integer.parseInt(in.nextLine());
+                                    if (durata > 0) {
+                                        break;  // La durata è valida, esci dal ciclo
+                                    } else {
+                                        System.out.println("Errore: La durata deve essere maggiore di zero.");
+                                    }
+                                } catch (NumberFormatException ex) {
+                                    System.out.println("Errore: La durata deve essere un numero valido. Riprova con un valore valido.");
+                                }
+                            }
 
                             System.out.print("Inserisci il genere del videogioco (AZIONE, AVVENTURA, SPORT, FANTASY): ");
                             String genereInput = in.nextLine();
-                            GenereGioco genere = GenereGioco.valueOf(genereInput.toUpperCase());
+                            try {
+                                GenereGioco genere = GenereGioco.valueOf(genereInput.toUpperCase());
+                                VideoGame nuovoVideogioco = new VideoGame(titoloGioco, annoGioco, prezzoGioco, durata, genere, piattaforma);
+                                collezione.addGioco(nuovoVideogioco);
+                                System.out.println("Videogioco aggiunto con successo.");
+                            } catch (IllegalArgumentException e) {
+                                System.out.println("Errore: Genere non valido. I generi validi sono: AZIONE, AVVENTURA, SPORT, FANTASY.");
+                            }
 
-                            VideoGame nuovoVideogioco = new VideoGame(titoloGioco, annoGioco, prezzoGioco, durata, genere, piattaforma);
-                            collezione.addGioco(nuovoVideogioco);
-                            System.out.println("Videogioco aggiunto con successo.");
                         } else if (tipoGioco == 2) {
-                            System.out.print("Inserisci il numero di giocatori: ");
-                            int numGiocatori = Integer.parseInt(in.nextLine());
-                            System.out.print("Inserisci la durata media della partita (in minuti): ");
-                            int durataPartita = Integer.parseInt(in.nextLine());
-                            GiocoDaTavolo newGiocoDaTavolo = new GiocoDaTavolo(titoloGioco, annoGioco, prezzoGioco, durataPartita, numGiocatori);
-                            collezione.addGioco(newGiocoDaTavolo);
-                            System.out.println("Gioco da Tavolo aggiunto con successo.");
+                            int numGiocatori;
+                            while (true) {
+                                System.out.print("Inserisci il numero di giocatori (tra 2 e 10): ");
+                                try {
+                                    numGiocatori = Integer.parseInt(in.nextLine());
+                                    if (numGiocatori >= 2 && numGiocatori <= 10) {
+                                        break;  // Il numero di giocatori è valido, esci dal ciclo
+                                    } else {
+                                        System.out.println("Errore: Il numero di giocatori deve essere compreso tra 2 e 10.");
+                                    }
+                                } catch (NumberFormatException ex) {
+                                    System.out.println("Errore: Il numero di giocatori deve essere un numero valido. Riprova con un valore valido.");
+                                }
+                            }
+
+                            int durataPartita;
+                            while (true) {
+                                System.out.print("Inserisci la durata media della partita (in minuti, maggiore di 0): ");
+                                try {
+                                    durataPartita = Integer.parseInt(in.nextLine());
+                                    if (durataPartita > 0) {
+                                        break;  // La durata è valida, esci dal ciclo
+                                    } else {
+                                        System.out.println("Errore: La durata media deve essere maggiore di zero.");
+                                    }
+                                } catch (NumberFormatException ex) {
+                                    System.out.println("Errore: La durata deve essere un numero valido. Riprova con un valore valido.");
+                                }
+                            }
+
+                            try {
+                                GiocoDaTavolo newGiocoDaTavolo = new GiocoDaTavolo(titoloGioco, annoGioco, prezzoGioco, durataPartita, numGiocatori);
+                                collezione.addGioco(newGiocoDaTavolo);
+                                System.out.println("Gioco da Tavolo aggiunto con successo.");
+                            } catch (IllegalArgumentException e) {
+                                System.out.println("Errore: " + e.getMessage());
+                            }
+
                         } else {
                             System.out.println("Dati non validi. Riprovare");
                         }
                         break;
+
 
                     case 2:
                         System.out.print("Inserisci l'ID del gioco da cercare: ");
@@ -127,6 +198,8 @@ public class Application {
                         }
                         break;
 
+// Codice aggiornato della sezione di modifica del gioco nel main:
+
                     case 6:
                         System.out.print("Inserisci l'ID del gioco da modificare: ");
                         int idGiocoDaModificare = Integer.parseInt(in.nextLine());
@@ -145,9 +218,15 @@ public class Application {
                             if (!nuovoAnno.trim().isEmpty()) {
                                 try {
                                     int anno = Integer.parseInt(nuovoAnno);
-                                    giocoPreModifiche.setAnnoDiPubblicazione(anno);
+                                    if (anno >= 1900 && anno <= 2024) {
+                                        giocoPreModifiche.setAnnoDiPubblicazione(anno);
+                                    } else {
+                                        System.out.println("Errore: L'anno di pubblicazione deve essere compreso tra 1900 e 2024.");
+                                    }
                                 } catch (NumberFormatException ex) {
-                                    System.out.println("Valore non valido per modificare l'anno");
+                                    System.out.println("Errore: L'anno deve essere un numero. Riprova con un valore valido.");
+                                } catch (IllegalArgumentException ex) {
+                                    System.out.println("Errore: " + ex.getMessage());
                                 }
                             }
 
@@ -156,9 +235,15 @@ public class Application {
                             if (!nuovoPrezzo.trim().isEmpty()) {
                                 try {
                                     double prezzo = Double.parseDouble(nuovoPrezzo);
-                                    giocoPreModifiche.setPrezzo(prezzo);
+                                    if (prezzo > 0) {
+                                        giocoPreModifiche.setPrezzo(prezzo);
+                                    } else {
+                                        System.out.println("Errore: Il prezzo deve essere maggiore di zero.");
+                                    }
                                 } catch (NumberFormatException ex) {
-                                    System.out.println("Valore non valido per modificare il prezzo");
+                                    System.out.println("Errore: Il prezzo deve essere un numero valido. Riprova.");
+                                } catch (IllegalArgumentException ex) {
+                                    System.out.println("Errore: " + ex.getMessage());
                                 }
                             }
 
@@ -168,7 +253,11 @@ public class Application {
                                 System.out.print("Piattaforma attuale (" + nuovoVg.getPiattaforma() + "): ");
                                 String nuovaPiattaforma = in.nextLine();
                                 if (!nuovaPiattaforma.trim().isEmpty()) {
-                                    nuovoVg.setPiattaforma(nuovaPiattaforma);
+                                    try {
+                                        nuovoVg.setPiattaforma(nuovaPiattaforma);
+                                    } catch (IllegalArgumentException ex) {
+                                        System.out.println("Errore: " + ex.getMessage());
+                                    }
                                 }
 
                                 System.out.print("Durata di gioco attuale (" + nuovoVg.getDurata() + " ore): ");
@@ -176,9 +265,15 @@ public class Application {
                                 if (!nuovaDurata.trim().isEmpty()) {
                                     try {
                                         int durata = Integer.parseInt(nuovaDurata);
-                                        nuovoVg.setDurataDiGioco(durata);
+                                        if (durata > 0) {
+                                            nuovoVg.setDurata(durata);
+                                        } else {
+                                            System.out.println("Errore: La durata deve essere maggiore di zero.");
+                                        }
                                     } catch (NumberFormatException ex) {
-                                        System.out.println("Valore non valido per modificare la durata");
+                                        System.out.println("Errore: La durata deve essere un numero valido. Riprova.");
+                                    } catch (IllegalArgumentException ex) {
+                                        System.out.println("Errore: " + ex.getMessage());
                                     }
                                 }
 
@@ -186,10 +281,9 @@ public class Application {
                                 String nuovoGenere = in.nextLine();
                                 if (!nuovoGenere.trim().isEmpty()) {
                                     try {
-                                        GenereGioco genere = GenereGioco.valueOf(nuovoGenere.toUpperCase());
-                                        nuovoVg.setGenere(genere);
+                                        nuovoVg.setGenere(GenereGioco.valueOf(nuovoGenere.toUpperCase()));
                                     } catch (IllegalArgumentException ex) {
-                                        System.out.println("Genere non valido");
+                                        System.out.println("Errore: Genere non valido. I generi validi sono: AZIONE, AVVENTURA, SPORT, FANTASY.");
                                     }
                                 }
 
@@ -201,9 +295,15 @@ public class Application {
                                 if (!nuovoNumGiocatori.trim().isEmpty()) {
                                     try {
                                         int numGiocatori = Integer.parseInt(nuovoNumGiocatori);
-                                        nuovoGt.setNumGiocatori(numGiocatori);
+                                        if (numGiocatori >= 2 && numGiocatori <= 10) {
+                                            nuovoGt.setNumGiocatori(numGiocatori);
+                                        } else {
+                                            System.out.println("Errore: Il numero di giocatori deve essere compreso tra 2 e 10.");
+                                        }
                                     } catch (NumberFormatException ex) {
-                                        System.out.println("Valore non valido per modificare num. di Giocatori");
+                                        System.out.println("Errore: Il numero di giocatori deve essere un numero valido. Riprova.");
+                                    } catch (IllegalArgumentException ex) {
+                                        System.out.println("Errore: " + ex.getMessage());
                                     }
                                 }
 
@@ -212,9 +312,15 @@ public class Application {
                                 if (!nuovaDurataPartita.trim().isEmpty()) {
                                     try {
                                         int durataMediaPartita = Integer.parseInt(nuovaDurataPartita);
-                                        nuovoGt.setDurataMediaPartita(durataMediaPartita);
+                                        if (durataMediaPartita > 0) {
+                                            nuovoGt.setDurataMediaPartita(durataMediaPartita);
+                                        } else {
+                                            System.out.println("Errore: La durata media della partita deve essere maggiore di zero.");
+                                        }
                                     } catch (NumberFormatException ex) {
-                                        System.out.println("Valore non valido per modificare durata Partita");
+                                        System.out.println("Errore: La durata deve essere un numero valido. Riprova.");
+                                    } catch (IllegalArgumentException ex) {
+                                        System.out.println("Errore: " + ex.getMessage());
                                     }
                                 }
                             }
@@ -223,6 +329,7 @@ public class Application {
                             System.out.println("Errore: Nessun gioco trovato con ID " + idGiocoDaModificare);
                         }
                         break;
+
 
                     case 7:
                         collezione.statisticheCollezione();
@@ -245,6 +352,6 @@ public class Application {
             }
         }
 
-        in.close(); // Chiude lo scanner alla fine del programma
+        in.close();
     }
 }

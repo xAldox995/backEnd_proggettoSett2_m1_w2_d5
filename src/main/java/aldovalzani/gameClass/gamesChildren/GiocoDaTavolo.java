@@ -16,15 +16,19 @@ public class GiocoDaTavolo extends Gioco {
         return durataMediaPartita;
     }
 
-    public void setDurataMediaPartita(int durataMediaPartita) {
-        this.durataMediaPartita = durataMediaPartita;
+    public void setDurataMediaPartita(int durataMediaPartita) throws IllegalArgumentException {
+        if (durataMediaPartita > 0) {
+            this.durataMediaPartita = durataMediaPartita;
+        } else {
+            throw new IllegalArgumentException("La durata media della partita deve essere maggiore di zero.");
+        }
     }
 
     public int getNumGiocatori() {
         return numGiocatori;
     }
 
-    public void setNumGiocatori(int numGiocatori) {
+    public void setNumGiocatori(int numGiocatori) throws IllegalArgumentException {
         if (numGiocatori <= 10 && numGiocatori >= 2) {
             this.numGiocatori = numGiocatori;
         } else {

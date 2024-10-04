@@ -10,13 +10,21 @@ public class VideoGame extends Gioco {
 
     public VideoGame(String titolo, int annoDiPubblicazione, double prezzo, int durataDiGioco, GenereGioco genere, String piattaforma) {
         super(titolo, annoDiPubblicazione, prezzo);
-        this.durataDiGioco = durataDiGioco;
+        setDurata(durataDiGioco);
         this.genere = genere;
         this.piattaforma = piattaforma;
     }
 
     public int getDurata() {
         return durataDiGioco;
+    }
+
+    public void setDurata(int durataDiGioco) throws IllegalArgumentException {
+        if (durataDiGioco > 0) {
+            this.durataDiGioco = durataDiGioco;
+        } else {
+            throw new IllegalArgumentException("La durata deve essere maggiore di zero.");
+        }
     }
 
     public GenereGioco getGenere() {
@@ -32,7 +40,11 @@ public class VideoGame extends Gioco {
     }
 
     public void setPiattaforma(String piattaforma) {
-        this.piattaforma = piattaforma;
+        if (piattaforma != null && !piattaforma.trim().isEmpty()) {
+            this.piattaforma = piattaforma;
+        } else {
+            throw new IllegalArgumentException("La piattaforma non può essere vuota.");
+        }
     }
 
     public void setDurataDiGioco(int durataDiGioco) {
