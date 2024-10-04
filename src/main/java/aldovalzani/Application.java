@@ -52,8 +52,20 @@ public class Application {
 
                 switch (scelta) {
                     case 1:
-                        System.out.print("Vuoi aggiungere un Videogioco (1) o un Gioco da Tavolo (2)? ");
-                        int tipoGioco = Integer.parseInt(in.nextLine());
+                        int tipoGioco;
+                        while (true) {
+                            System.out.print("Vuoi aggiungere un Videogioco (1) o un Gioco da Tavolo (2)? ");
+                            try {
+                                tipoGioco = Integer.parseInt(in.nextLine());
+                                if (tipoGioco == 1 || tipoGioco == 2) {
+                                    break; // L'input è valido, esci dal ciclo
+                                } else {
+                                    System.out.println("Errore: Devi scegliere 1 per Videogioco o 2 per Gioco da Tavolo. Riprova.");
+                                }
+                            } catch (NumberFormatException ex) {
+                                System.out.println("Errore: L'input deve essere un numero valido. Inserisci 1 per Videogioco o 2 per Gioco da Tavolo.");
+                            }
+                        }
 
                         System.out.print("Inserisci il titolo del gioco: ");
                         String titoloGioco = in.nextLine();
