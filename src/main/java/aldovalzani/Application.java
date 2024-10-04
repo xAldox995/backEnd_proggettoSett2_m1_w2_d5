@@ -129,6 +129,18 @@ public class Application {
                 case 6:
                     System.out.print("Inserisci l'ID del gioco da modificare: ");
                     int idGiocoDaModificare = Integer.parseInt(in.nextLine());
+                    Optional<Gioco> giocoDaModificare = collezione.ricercaConId(idGiocoDaModificare);
+                    if (giocoDaModificare.isPresent()) {
+                        Gioco giocoPreModifiche = giocoDaModificare.get();
+
+                        System.out.print("Titolo attuale (" + giocoPreModifiche.getTitolo() + "): ");
+                        String nuovoTitolo = in.nextLine();
+                        if (!nuovoTitolo.trim().isEmpty()) {
+                            giocoPreModifiche.setTitolo(nuovoTitolo);
+                        }
+
+
+                    }
 
             }
 
