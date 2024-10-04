@@ -1,17 +1,17 @@
 package aldovalzani.gameClass;
 
-public class Giochi {
+public class Gioco {
     private static int contatoreId = 1;
     private final int idGioco;
     private String titolo;
     private int annoDiPubblicazione;
     private double prezzo;
 
-    public Giochi(String titolo, int annoDiPubblicazione, int prezzo) {
+    public Gioco(String titolo, int annoDiPubblicazione, double prezzo) {
         this.idGioco = contatoreId++;
         this.titolo = titolo;
         this.annoDiPubblicazione = annoDiPubblicazione;
-        this.prezzo = prezzo;
+        setPrezzo(prezzo);
     }
 
     public static int getContatoreId() {

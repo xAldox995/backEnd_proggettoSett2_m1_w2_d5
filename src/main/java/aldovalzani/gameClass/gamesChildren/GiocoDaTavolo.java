@@ -1,12 +1,12 @@
 package aldovalzani.gameClass.gamesChildren;
 
-import aldovalzani.gameClass.Giochi;
+import aldovalzani.gameClass.Gioco;
 
-public class GiocoDaTavolo extends Giochi {
+public class GiocoDaTavolo extends Gioco {
     private int numGiocatori;
     private int durataMediaPartita;
 
-    public GiocoDaTavolo(String titolo, int annoDiPubblicazione, int prezzo, int durataMediaPartita, int numGiocatori) {
+    public GiocoDaTavolo(String titolo, int annoDiPubblicazione, double prezzo, int durataMediaPartita, int numGiocatori) {
         super(titolo, annoDiPubblicazione, prezzo);
         setNumGiocatori(numGiocatori);
         this.durataMediaPartita = durataMediaPartita;

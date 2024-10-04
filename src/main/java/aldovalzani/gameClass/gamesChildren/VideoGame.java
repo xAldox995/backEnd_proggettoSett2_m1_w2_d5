@@ -1,16 +1,16 @@
 package aldovalzani.gameClass.gamesChildren;
 
 import aldovalzani.gameClass.GenereGioco;
-import aldovalzani.gameClass.Giochi;
+import aldovalzani.gameClass.Gioco;
 
-public class VideoGame extends Giochi {
+public class VideoGame extends Gioco {
     private String piattaforma;
     private int durataDiGioco;
     private GenereGioco genere;
 
-    public VideoGame(String titolo, int annoDiPubblicazione, int prezzo, int durataDiGioco, GenereGioco genere, String piattaforma) {
+    public VideoGame(String titolo, int annoDiPubblicazione, double prezzo, int durataDiGioco, GenereGioco genere, String piattaforma) {
         super(titolo, annoDiPubblicazione, prezzo);
-        this.durata = durataDiGioco;
+        this.durataDiGioco = durataDiGioco;
         this.genere = genere;
         this.piattaforma = piattaforma;
     }
