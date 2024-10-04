@@ -29,10 +29,10 @@ public class Collezione {
                 filter(giocoDaTavolo -> giocoDaTavolo.getNumGiocatori() == numGiocatori).toList();
     }
 
-    public void eliminaGioco(int id) throws NoSuchFieldException {
+    public void eliminaGioco(int id) throws NoSuchElementException {
         boolean elimina = giochi.removeIf(gioco -> gioco.getIdGioco() == id);
         if (!elimina) {
-            throw new NoSuchFieldException("Non esiste il gioco con ID: " + id);
+            throw new NoSuchElementException("Non esiste il gioco con ID: " + id);
         }
     }
 
@@ -64,5 +64,19 @@ public class Collezione {
 
     public List<Gioco> getGiochi() {
         return giochi;
+    }
+
+
+    @Override
+    public String toString() {
+        if (giochi.isEmpty()) {
+            return "La collezione è vuota.";
+        }
+
+        String result = "Lista dei giochi nella collezione:\n";
+        for (Gioco gioco : giochi) {
+            result += gioco.toString() + "\n";
+        }
+        return result;
     }
 }
