@@ -1,6 +1,6 @@
 package aldovalzani.gameClass;
 
-public class Gioco {
+public abstract class Gioco {
     private static int contatoreId = 1;
     private final int idGioco;
     private String titolo;
@@ -14,16 +14,18 @@ public class Gioco {
         setPrezzo(prezzo);
     }
 
-    public static void setContatoreId(int contatoreId) {
-        Gioco.contatoreId = contatoreId;
-    }
 
     public int getAnnoDiPubblicazione() {
         return annoDiPubblicazione;
     }
 
-    public void setAnnoDiPubblicazione(int annoDiPubblicazione) {
-        this.annoDiPubblicazione = annoDiPubblicazione;
+    public void setAnnoDiPubblicazione(int annoDiPubblicazione) throws IllegalArgumentException {
+
+        if (annoDiPubblicazione > 0) {
+            this.annoDiPubblicazione = annoDiPubblicazione;
+        } else {
+            throw new IllegalArgumentException("l'anno deve essere positivo");
+        }
     }
 
     public int getIdGioco() {

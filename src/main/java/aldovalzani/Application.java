@@ -29,16 +29,11 @@ public class Application {
         GiocoDaTavolo tg2 = new GiocoDaTavolo(faker.book().title(),
                 2010, 35.50, 90, 6);
 
-//        System.out.println(vg1);
-//        System.out.println(tg1);
-
         Collezione collezione = new Collezione();
         collezione.addGioco(vg1);
         collezione.addGioco(vg2);
         collezione.addGioco(tg1);
         collezione.addGioco(tg2);
-
-//        System.out.println(collezione);
 
         Scanner in = new Scanner(System.in);
         boolean flag = true;
@@ -56,96 +51,200 @@ public class Application {
             System.out.println("0. Esci");
             System.out.print("Scegli un'opzione: ");
 
-            int scelta = Integer.parseInt(in.nextLine());
+            try {
+                int scelta = Integer.parseInt(in.nextLine());
 
-            switch (scelta) {
-                case 1:
-                    System.out.print("Vuoi aggiungere un Videogioco (1) o un Gioco da Tavolo (2)? ");
-                    int tipoGioco = Integer.parseInt(in.nextLine());
-                    System.out.print("Inserisci il titolo del gioco: ");
-                    String titoloGioco = in.nextLine();
-                    System.out.print("Inserisci l'anno di pubblicazione: ");
-                    int annoGioco = Integer.parseInt(in.nextLine());
-                    System.out.print("Inserisci il prezzo del gioco: ");
-                    double prezzoGioco = Double.parseDouble(in.nextLine());
+                switch (scelta) {
+                    case 1:
+                        System.out.print("Vuoi aggiungere un Videogioco (1) o un Gioco da Tavolo (2)? ");
+                        int tipoGioco = Integer.parseInt(in.nextLine());
+                        System.out.print("Inserisci il titolo del gioco: ");
+                        String titoloGioco = in.nextLine();
+                        System.out.print("Inserisci l'anno di pubblicazione: ");
+                        int annoGioco = Integer.parseInt(in.nextLine());
+                        System.out.print("Inserisci il prezzo del gioco: ");
+                        double prezzoGioco = Double.parseDouble(in.nextLine());
 
-                    if (tipoGioco == 1) {
-                        System.out.print("Inserisci la piattaforma del videogioco: ");
-                        String piattaforma = in.nextLine();
+                        if (tipoGioco == 1) {
+                            System.out.print("Inserisci la piattaforma del videogioco: ");
+                            String piattaforma = in.nextLine();
 
-                        System.out.print("Inserisci la durata di gioco (in ore): ");
-                        int durata = Integer.parseInt(in.nextLine());
+                            System.out.print("Inserisci la durata di gioco (in ore): ");
+                            int durata = Integer.parseInt(in.nextLine());
 
-                        System.out.print("Inserisci il genere del videogioco (AZIONE, AVVENTURA, RPG, SPORT, SIMULAZIONE, STRATEGIA, FANTASY): ");
-                        String genereInput = in.nextLine();
-                        GenereGioco genere = GenereGioco.valueOf(genereInput.toUpperCase());
+                            System.out.print("Inserisci il genere del videogioco (AZIONE, AVVENTURA, SPORT, FANTASY): ");
+                            String genereInput = in.nextLine();
+                            GenereGioco genere = GenereGioco.valueOf(genereInput.toUpperCase());
 
-                        VideoGame nuovoVideogioco = new VideoGame(titoloGioco, annoGioco, prezzoGioco, durata, genere, piattaforma);
-                        collezione.addGioco(nuovoVideogioco);
-                        System.out.println("Videogioco aggiunto con successo.");
-                    } else if (tipoGioco == 2) {
-                        System.out.print("Inserisci il numero di giocatori: ");
-                        int numGiocatori = Integer.parseInt(in.nextLine());
-                        System.out.print("Inserisci la durata media della partita (in minuti): ");
-                        int durataPartita = Integer.parseInt(in.nextLine());
-                        GiocoDaTavolo newGiocoDaTavolo = new GiocoDaTavolo(titoloGioco, annoGioco, prezzoGioco, durataPartita, numGiocatori);
-                        System.out.println("Gioco da Tavolo aggiunto con successo.");
-                    } else {
-                        System.out.println("Dati non validi. Riprovare");
-                    }
-                    break;
-                case 2:
-                    System.out.print("Inserisci l'ID del gioco da cercare: ");
-                    int idPerRicerca = Integer.parseInt(in.nextLine());
-                    Optional<Gioco> giocoDaCercare = collezione.ricercaConId(idPerRicerca);
-                    if (giocoDaCercare.isPresent()) {
-                        System.out.println("Ecco il gioco che cercavi: " + giocoDaCercare.get());
-                    } else {
-                        System.out.println("Errore: L'ID " + idPerRicerca + " non esiste");
-                    }
-                    break;
-                case 3:
-                    System.out.print("Inserisci il prezzo massimo: ");
-                    double rangePrezzo = Double.parseDouble(in.nextLine());
-                    collezione.ricercaGiocoRangePrezzo(rangePrezzo).forEach(gioco -> System.out.println(gioco));
-                    break;
-                case 4:
-                    System.out.print("Inserisci il numero di giocatori: ");
-                    int numGiocatoriPerRicerca = Integer.parseInt(in.nextLine());
-                    collezione.ricercaGiocoPerNumGiocatori(numGiocatoriPerRicerca).
-                            forEach(giocoDaTavolo -> System.out.println(giocoDaTavolo));
-                    break;
-                case 5:
-                    System.out.print("Inserisci l'ID del gioco da rimuovere: ");
-                    int idDaEliminare = Integer.parseInt(in.nextLine());
-                    try {
-                        collezione.eliminaGioco(idDaEliminare);
-                        System.out.println("Gioco Eliminato");
-                    } catch (NoSuchElementException ex) {
-                        System.out.println("Non esiste il gioco con ID: " + idDaEliminare);
-                    }
-                    break;
-
-                case 6:
-                    System.out.print("Inserisci l'ID del gioco da modificare: ");
-                    int idGiocoDaModificare = Integer.parseInt(in.nextLine());
-                    Optional<Gioco> giocoDaModificare = collezione.ricercaConId(idGiocoDaModificare);
-                    if (giocoDaModificare.isPresent()) {
-                        Gioco giocoPreModifiche = giocoDaModificare.get();
-
-                        System.out.print("Titolo attuale (" + giocoPreModifiche.getTitolo() + "): ");
-                        String nuovoTitolo = in.nextLine();
-                        if (!nuovoTitolo.trim().isEmpty()) {
-                            giocoPreModifiche.setTitolo(nuovoTitolo);
+                            VideoGame nuovoVideogioco = new VideoGame(titoloGioco, annoGioco, prezzoGioco, durata, genere, piattaforma);
+                            collezione.addGioco(nuovoVideogioco);
+                            System.out.println("Videogioco aggiunto con successo.");
+                        } else if (tipoGioco == 2) {
+                            System.out.print("Inserisci il numero di giocatori: ");
+                            int numGiocatori = Integer.parseInt(in.nextLine());
+                            System.out.print("Inserisci la durata media della partita (in minuti): ");
+                            int durataPartita = Integer.parseInt(in.nextLine());
+                            GiocoDaTavolo newGiocoDaTavolo = new GiocoDaTavolo(titoloGioco, annoGioco, prezzoGioco, durataPartita, numGiocatori);
+                            collezione.addGioco(newGiocoDaTavolo);
+                            System.out.println("Gioco da Tavolo aggiunto con successo.");
+                        } else {
+                            System.out.println("Dati non validi. Riprovare");
                         }
+                        break;
 
+                    case 2:
+                        System.out.print("Inserisci l'ID del gioco da cercare: ");
+                        int idPerRicerca = Integer.parseInt(in.nextLine());
+                        Optional<Gioco> giocoDaCercare = collezione.ricercaConId(idPerRicerca);
+                        if (giocoDaCercare.isPresent()) {
+                            System.out.println("Ecco il gioco che cercavi: " + giocoDaCercare.get());
+                        } else {
+                            System.out.println("Errore: L'ID " + idPerRicerca + " non esiste");
+                        }
+                        break;
 
-                    }
+                    case 3:
+                        System.out.print("Inserisci il prezzo massimo: ");
+                        double rangePrezzo = Double.parseDouble(in.nextLine());
+                        collezione.ricercaGiocoRangePrezzo(rangePrezzo).forEach(gioco -> System.out.println(gioco));
+                        break;
 
+                    case 4:
+                        System.out.print("Inserisci il numero di giocatori: ");
+                        int numGiocatoriPerRicerca = Integer.parseInt(in.nextLine());
+                        collezione.ricercaGiocoPerNumGiocatori(numGiocatoriPerRicerca)
+                                .forEach(giocoDaTavolo -> System.out.println(giocoDaTavolo));
+                        break;
+
+                    case 5:
+                        System.out.print("Inserisci l'ID del gioco da rimuovere: ");
+                        int idDaEliminare = Integer.parseInt(in.nextLine());
+                        try {
+                            collezione.eliminaGioco(idDaEliminare);
+                            System.out.println("Gioco Eliminato");
+                        } catch (NoSuchElementException ex) {
+                            System.out.println("Non esiste il gioco con ID: " + idDaEliminare);
+                        }
+                        break;
+
+                    case 6:
+                        System.out.print("Inserisci l'ID del gioco da modificare: ");
+                        int idGiocoDaModificare = Integer.parseInt(in.nextLine());
+                        Optional<Gioco> giocoDaModificare = collezione.ricercaConId(idGiocoDaModificare);
+                        if (giocoDaModificare.isPresent()) {
+                            Gioco giocoPreModifiche = giocoDaModificare.get();
+
+                            System.out.print("Titolo attuale (" + giocoPreModifiche.getTitolo() + "): ");
+                            String nuovoTitolo = in.nextLine();
+                            if (!nuovoTitolo.trim().isEmpty()) {
+                                giocoPreModifiche.setTitolo(nuovoTitolo);
+                            }
+
+                            System.out.print("Anno di pubblicazione attuale (" + giocoPreModifiche.getAnnoDiPubblicazione() + "): ");
+                            String nuovoAnno = in.nextLine();
+                            if (!nuovoAnno.trim().isEmpty()) {
+                                try {
+                                    int anno = Integer.parseInt(nuovoAnno);
+                                    giocoPreModifiche.setAnnoDiPubblicazione(anno);
+                                } catch (NumberFormatException ex) {
+                                    System.out.println("Valore non valido per modificare l'anno");
+                                }
+                            }
+
+                            System.out.print("Prezzo attuale (" + giocoPreModifiche.getPrezzo() + "): ");
+                            String nuovoPrezzo = in.nextLine();
+                            if (!nuovoPrezzo.trim().isEmpty()) {
+                                try {
+                                    double prezzo = Double.parseDouble(nuovoPrezzo);
+                                    giocoPreModifiche.setPrezzo(prezzo);
+                                } catch (NumberFormatException ex) {
+                                    System.out.println("Valore non valido per modificare il prezzo");
+                                }
+                            }
+
+                            if (giocoPreModifiche instanceof VideoGame) {
+                                VideoGame nuovoVg = (VideoGame) giocoPreModifiche;
+
+                                System.out.print("Piattaforma attuale (" + nuovoVg.getPiattaforma() + "): ");
+                                String nuovaPiattaforma = in.nextLine();
+                                if (!nuovaPiattaforma.trim().isEmpty()) {
+                                    nuovoVg.setPiattaforma(nuovaPiattaforma);
+                                }
+
+                                System.out.print("Durata di gioco attuale (" + nuovoVg.getDurata() + " ore): ");
+                                String nuovaDurata = in.nextLine();
+                                if (!nuovaDurata.trim().isEmpty()) {
+                                    try {
+                                        int durata = Integer.parseInt(nuovaDurata);
+                                        nuovoVg.setDurataDiGioco(durata);
+                                    } catch (NumberFormatException ex) {
+                                        System.out.println("Valore non valido per modificare la durata");
+                                    }
+                                }
+
+                                System.out.print("Genere attuale (" + nuovoVg.getGenere() + "): ");
+                                String nuovoGenere = in.nextLine();
+                                if (!nuovoGenere.trim().isEmpty()) {
+                                    try {
+                                        GenereGioco genere = GenereGioco.valueOf(nuovoGenere.toUpperCase());
+                                        nuovoVg.setGenere(genere);
+                                    } catch (IllegalArgumentException ex) {
+                                        System.out.println("Genere non valido");
+                                    }
+                                }
+
+                            } else if (giocoPreModifiche instanceof GiocoDaTavolo) {
+                                GiocoDaTavolo nuovoGt = (GiocoDaTavolo) giocoPreModifiche;
+
+                                System.out.print("Numero di giocatori attuale (" + nuovoGt.getNumGiocatori() + "): ");
+                                String nuovoNumGiocatori = in.nextLine();
+                                if (!nuovoNumGiocatori.trim().isEmpty()) {
+                                    try {
+                                        int numGiocatori = Integer.parseInt(nuovoNumGiocatori);
+                                        nuovoGt.setNumGiocatori(numGiocatori);
+                                    } catch (NumberFormatException ex) {
+                                        System.out.println("Valore non valido per modificare num. di Giocatori");
+                                    }
+                                }
+
+                                System.out.print("Durata media della partita attuale (" + nuovoGt.getDurataMediaPartita() + " minuti): ");
+                                String nuovaDurataPartita = in.nextLine();
+                                if (!nuovaDurataPartita.trim().isEmpty()) {
+                                    try {
+                                        int durataMediaPartita = Integer.parseInt(nuovaDurataPartita);
+                                        nuovoGt.setDurataMediaPartita(durataMediaPartita);
+                                    } catch (NumberFormatException ex) {
+                                        System.out.println("Valore non valido per modificare durata Partita");
+                                    }
+                                }
+                            }
+                            System.out.println("Gioco aggiornato con successo.");
+                        } else {
+                            System.out.println("Errore: Nessun gioco trovato con ID " + idGiocoDaModificare);
+                        }
+                        break;
+
+                    case 7:
+                        collezione.statisticheCollezione();
+                        break;
+
+                    case 8:
+                        System.out.println(collezione);
+                        break;
+
+                    case 0:
+                        flag = false;
+                        System.out.println("Uscita dal programma...");
+                        break;
+
+                    default:
+                        System.out.println("Opzione non valida. Riprovare.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Input non valido. Per favore, inserisci un numero.");
             }
-
         }
 
-
+        in.close(); // Chiude lo scanner alla fine del programma
     }
 }

@@ -23,8 +23,20 @@ public class VideoGame extends Gioco {
         return genere;
     }
 
+    public void setGenere(GenereGioco genere) {
+        this.genere = genere;
+    }
+
     public String getPiattaforma() {
         return piattaforma;
+    }
+
+    public void setPiattaforma(String piattaforma) {
+        this.piattaforma = piattaforma;
+    }
+
+    public void setDurataDiGioco(int durataDiGioco) {
+        this.durataDiGioco = durataDiGioco;
     }
 
     @Override

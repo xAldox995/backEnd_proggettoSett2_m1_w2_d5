@@ -16,6 +16,10 @@ public class GiocoDaTavolo extends Gioco {
         return durataMediaPartita;
     }
 
+    public void setDurataMediaPartita(int durataMediaPartita) {
+        this.durataMediaPartita = durataMediaPartita;
+    }
+
     public int getNumGiocatori() {
         return numGiocatori;
     }
