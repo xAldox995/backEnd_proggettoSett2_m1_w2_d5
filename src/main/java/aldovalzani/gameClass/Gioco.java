@@ -14,9 +14,6 @@ public class Gioco {
         setPrezzo(prezzo);
     }
 
-    public static int getContatoreId() {
-        return contatoreId;
-    }
 
     public int getAnnoDiPubblicazione() {
         return annoDiPubblicazione;
@@ -30,7 +27,7 @@ public class Gioco {
         return prezzo;
     }
 
-    public void setPrezzo(double prezzo) {
+    public void setPrezzo(double prezzo) throws IllegalArgumentException {
         if (prezzo > 0) {
             this.prezzo = prezzo;
         } else {
